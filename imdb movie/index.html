@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #heading {
+            text-align: center;
+            font-size: xx-large;
+            font-family: sans-serif;
+            /* border: 1px solid black; */
+        }
+
+        #container {
+            margin-top: 40px;
+            justify-content: center;
+            /* border: 1px solid black; */
+
+        }
+
+        input {
+            height: 30px;
+            width: 220px;
+            margin-left: 40%;
+
+        }
+
+        button {
+            height: 35px;
+            width: 100px;
+        }
+
+        #showme {
+            margin-left: 36%;
+            height: 420px;
+            width: 450px;
+            /* border: 1px solid black; */
+            margin-top: 10px;
+            /* background-color: grey; */
+        }
+
+        #showme>img {
+            width: 100%;
+            height: 70%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="heading">
+        Search Here
+    </div>
+    <div id="container">
+        <div id="searchbar">
+            <input type="text" id="search">
+            <button onclick="searchmovies()" id="searchmovie">Search</button>
+        </div>
+        <div id="showme">
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script>
+
+
+    
+
+
+    async function searchmovies() {
+
+        let inmovies = document.getElementById("search").value;
+        // try{
+
+        let res = await fetch(`https://www.omdbapi.com/?apikey=e135b894+&t=${inmovies}`);
+
+        let send = await res.json();
+        console.log(send)
+        if (send.Response == "True") {
+
+            appendMovie(send)
+        } else {
+            document.querySelector("#showme").innerHTML = null;
+
+            let img = document.createElement("img");
+            img.src = "https://imgs.search.brave.com/YHA9wVSIfKyFsqGpROp9Gk-kU_ZD67bOPAJDjWTyeo8/rs:fit:300:225:1/g:ce/aHR0cHM6Ly90c2Ux/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5q/S1Y1VXdvZExxNk5y/SjY4U296VG9BQUFB/QSZwaWQ9QXBp"
+
+            document.querySelector("#showme").append(img)
+            console.log("surya")
+        }
+
+       
+
+    }
+
+
+
+    function appendMovie(send) {
+        document.querySelector("#showme").innerHTML = "";
+
+
+        var Poster = document.createElement("img")
+        Poster.src = send.Poster;
+
+        var title = document.createElement("h2")
+        title.innerText = send.Title;
+
+        var imbdID = document.createElement("h4")
+        imbdID.innerText = send.imdbRating;
+        if(send.imdbRating>8.5){
+            imbdID.innerText=`${send.imdbRating}-recommended`
+        }
+
+        var year = document.createElement("p")
+        year.innerText = send.Released;
+
+        var awards = document.createElement("p")
+        awards.innerText = send.Awards;
+
+        var language = document.createElement("p")
+        language.innerText = send.Language;
+
+      
+
+
+
+        document.querySelector("#showme").append(Poster, title, year, language, awards, imbdID)
+
+    }
+
+    
+
+</script>
